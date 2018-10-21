@@ -1,0 +1,153 @@
+{% extends "/template.html" %} 
+{% block title %}{{product.name}} - {% endblock %}
+{% block meta %}
+<!-- Google / Search Engine Tags -->
+<meta itemprop="name" content="RedGingger - Shop for Trending Sunglasses">
+<meta itemprop="description" content="Get most trending Sunglasses, Eyeglasses for boys & girls. FREE shipping, Cash on Delivery and 10 Days return only at redgingger.com">
+<meta itemprop="image" content="https://redgingger.com/product_images?image={{product.image_2}}">
+
+
+<meta property="og:type"        content="product" />
+<meta property="og:title"       content="{{product.name}} | RedGingger" />
+<meta property="og:description" content="{{ product.other_details }}" />
+<meta property="og:image"       content="https://redgingger.com/product_images?image={{product.image_2}}" />
+
+<!-- Twitter Meta Tags -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="RedGingger - Shop for Trending Sunglasses">
+<meta name="twitter:description" content="Get most trending Sunglasses, Eyeglasses for boys & girls. FREE shipping, Cash on Delivery and 10 Days return only at redgingger.com">
+{% endblock %}
+{% block content %}
+<div class="container product-big-details">
+    <div class="card product">
+        <div class="left">
+            <img src="/product_images?image={{product.image_1}}" alt="{{product.name}}" id="main-image-product">
+            <div class="smallimgs">
+                <img src="/product_images?image={{product.image_1}}" alt="{{product.name}} image 1">
+                <img src="/product_images?image={{product.image_2}}" alt="{{product.name}} image 2">
+                <img src="/product_images?image={{product.image_3}}" alt="{{product.name}} image 3">
+            </div>
+        </div>
+        <div class="right">
+            <h1 class="p-title">{{product.name}}</h1>
+            <p class="cross-price">Preço:
+                <s>R$ {{product.actual_price}}</s>
+            </p>
+            {% if product.color %}
+                <p class="text">
+                <span class="list-circle"></span>Cor: {{product.color}}</p>
+            {% endif %}
+            {% if product.size %}
+            <p class="text">
+                <span class="list-circle"></span>Tamanho: {{product.size}}</p>
+            {% endif %}
+            <div class="button-group">
+                {% if product.count >= 1 %}
+                    <a class="btn btn-highlight" href="{{url_for('buy_now', product_id=product.id)}}">ALUGAR</a>
+                    <a class="btn btn-dark" href="{{url_for('add_to_cart', product_id=product.id)}}">ADICIONAR AO CARRINHO</a>
+                {% endif %}            
+            </div>
+        </div>
+    </div>
+    <div class="card general_details">
+        <h2>Overview</h2><hr>
+        <h4>Detalhes</h4>
+        <div class="flex-tables">
+            <div>
+                Este produto é fabricado utilizando apenas madeira maciça pinus, pensando no meio ambiente, sendo um produto de madeira assim garante uma vida útil muito maior do produto, matéria-prima de qualidade, excelente qualidade no acabamento dos produtos para melhor atender seus clientes.
+            </div>
+            <div>
+                MEDIDAS(altura x largura x comprimento): 1,10cm, 1,40cm, 1,90cm.
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container reviews">
+    <div class="card be-social">
+        <p class="bold">BORA COMPARTILHAR</p>
+        <p class="social">
+            <a href="https://www.instagram.com/redgingger2018/" target="_blank"><i class="fa fa-instagram" aria-hidden="true"></i></a>
+            <a href="https://twitter.com/redgingger2018" target="_blank"><i class="fa fa-twitter" aria-hidden="true"></i></a>
+            <a href="https://www.facebook.com/redgingger2018" target="_blank"><i class="fa fa-facebook" aria-hidden="true"></i></a>
+        </p>
+        <p class="tag">#NovoAr</p>
+    </div>
+    <div class="card review--anim">
+        <form action="{{ url_for('add_comment', product_id=product.id) }}" method="POST" class="add-review">
+            <p>Adicionar um comentário:</p>
+            <span class="fa fa-star checked"></span>
+            <span class="fa fa-star checked"></span>
+            <span class="fa fa-star checked"></span>
+            <span class="fa fa-star"></span>
+            <span class="fa fa-star"></span>
+            <textarea name="review-text" id="" placeholder="Escreva aqui."></textarea>
+            <button type="submit" class="btn">Enviar</button>
+        </form>
+    </div>
+    {% if comments %}
+    {% for comment in comments %}
+    <div class="card">
+        <p class="user">{{comment.user.email}}</p>
+        <select class="reviewratings---" disabled>
+            {% if comment.rating == 1 %}
+            <option value="1" selected>1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            {% endif %}
+            {% if comment.rating == 2 %}
+            <option value="1">1</option>
+            <option value="2" selected>2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            {% endif %}
+            {% if comment.rating == 3 %}
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3" selected>3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            {% endif %}
+            {% if comment.rating == 4 %}
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4" selected>4</option>
+            <option value="5">5</option>
+            {% endif %}
+            {% if comment.rating == 5 %}
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5" selected>5</option>
+            {% endif %}
+        </select>
+        {% if comment.text %}
+        <blockquote class="review-text">{{comment.text}}</blockquote>
+        {% endif %}
+        <p class="date">{{comment.comment_time}}</p>
+    </div>
+    {% endfor %}
+    {% endif %}
+</div>
+<script>
+    $('#example').barrating({
+        theme: 'fontawesome-stars'
+    });
+    $('.reviewratings---').barrating({
+        theme: 'fontawesome-stars'
+    });
+    $('.reviewratings---').barrating('readonly', true);
+
+
+    $('.product .left .smallimgs img').on('click', function(e) {
+        let attrib = $(this).attr('src');
+        $('#main-image-product').attr('src', attrib);
+    });
+
+</script>
+{% endblock %}

@@ -1,0 +1,33 @@
+{% extends "template.html" %} 
+{% block title %}Cart - {% endblock %}
+{% block content %} 
+<div class="cart container">
+    <div class="card">
+        <div class="heading">Seu carrinho</div>
+        {% for product in products %}
+        <div class="item">
+            <div class="left">
+                <img src="/product_images?image={{product.image_1}}" alt="">
+            </div>
+            <div class="right">
+                <p>{{ product.name }}</p>
+                <p class="price">{{product.off_percent}}%OFF</p>
+                <p class="price">Preço : ₹{{ product.buy_price }} x {{ product.cart.count }} =  ₹{{product.buy_price * product.cart.count }}</p>
+                <p class="quantity">Quantidade : {{ product.cart.count }}</p>
+                <p class="note">Para aumentar a quantidade, clique novamente em adicionar ao carrinho.</p>
+                <a class="btn btn-small" href="{{url_for('delete_to_cart', product_id=product.id)}}">Excluir</a>
+            </div>
+        </div>
+        {% else %}
+            <p style="text-align: center; width:100%">Nenhum produto foi adicionado ao carrinho.</p>
+        {% endfor %}
+        <div class="button">
+            {% if products %}
+                <a class="btn btn-highlight" href="{{url_for('checkout')}}">Checkout</a>
+            {% else %}
+                <a class="btn btn-highlight" href="{{url_for('index')}}">Continue comprando</a>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
